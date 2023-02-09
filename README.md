@@ -6,6 +6,7 @@ A whitelist dapp built on the celo blockchain using Vue.js for giving users earl
 - Introduction
 - Requirement
 - Prerequisites
+- Tech stack
 - Building the smart contract
 - Building the frontend using Vue.js
 - Pushing to Github
@@ -40,3 +41,17 @@ Lets start building 🚀
 - Command line or similar software installed.
 
 ### Building The Smart Contract
+Now it's time to create a Solidity smart contract.
+You can use any editor you like to make the contract. However, for this part of the tutorial we recommend the online IDE [RemixIDE](https://remix.ethereum.org/)
+1.  Go to Remix
+2.  Check out the "Solidity Compiler", and "Deploy and Run Transactions" tabs. If they are not present, enable them in the plugin manager
+3.  Create a new solidity file in remix, named mood.sol
+4.  Write the contract
+
+ 
+
+Specify the solidity version and add a license
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.9;
+```
