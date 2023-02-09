@@ -1,7 +1,42 @@
-# Vue 3 + Vite
+# BUILDING A CELO WHITELIST DAPP USING VUE.JS
+A whitelist dapp built on the celo blockchain using Vue.js for giving users early access to any services(could be early access to an NFT collection, a marketplace etc).
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
-## Recommended IDE Setup
+## Table of Content
+- Introduction
+- Requirement
+- Prerequisites
+- Building the smart contract
+- Building the frontend using Vue.js
+- Pushing to Github
+- Delpoying to vercel
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+
+### Introduction
+Celo was designed to enable a new universe of financial solutions accessible for mobile users, creating a global financial ecosystem where an end-user can onboard into the Celo ecosystem with just a mobile number. It offers the following key features
+- Layer-1 protocol
+- EVM compatible
+- Proof-of-stake
+- Carbon negative
+- Mobile-first identity
+- Ultra-light clients
+- Localized stablecoins (cUSD, cEUR, cREAL)
+- Gas payable in multiple currencies
+For more information, click [here](https://docs.celo.org/general) to learn more about celo
+
+
+### Requirements
+- Writing the smart contract and deploying it on the celo blockchain using RemixIDE. Access should be given to the first 15 users for free who want to get in.
+- There should be a website where people can go and enter into the whitelist. We will use Vue.js to build it and interact with our smart contract
+
+Lets start building 🚀
+
+### Prerequisites
+- You can write code in Vue.js
+- Have celo extension wallet installed and set up. If not, install [CeloExtensionWallet](https://chrome.google.com/webstore/detail/celoextensionwallet/kkilomkmpmkbdnfelcpgckmpcaemjcdh?hl=en) from Google Chrome store
+- Nodejs installed on your machine.
+- An IDE such as Vscode or Sublime text.
+- Remix IDE.
+- Command line or similar software installed.
+
+### Building The Smart Contract
