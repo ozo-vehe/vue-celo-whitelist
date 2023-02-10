@@ -44,26 +44,27 @@ Lets start building 🚀
 Now it's time to create a Solidity smart contract.
 You can use any editor you like to make the contract. However, for this part of the tutorial we recommend the online IDE [RemixIDE](https://remix.ethereum.org/)
 1.  Go to Remix
+![Remix IDE](https://github.com/ozo-vehe/vue-celo-whitelist/remixIDE.png) 
 2.  Check out the "Solidity Compiler", and "Deploy and Run Transactions" tabs. If they are not present, enable them in the plugin manager
 3.  Create a new solidity file in remix, named mood.sol
 4.  Write the contract
 
-4.1 Specify the solidity version and add a license
-```
+4.1 Specify the solidity version and add a license 
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 ```
 
 
 4.2 Define the contract
-```
+```solidity
 contract Whitelist {
   // This is the contract's body, here you'll specify the logic for this contract.
 }
 ```
 
 4.3 Inside the contract create the following variables
-```
+```solidity
 // Max number of whitelisted addresses allowed to join the whitelist
 uint256 public maxWhitelistedAddresses = 10;
 
@@ -76,7 +77,7 @@ uint256 public numAddressesWhitelisted;
 ```
 
 4.4 Next, create the addAddressToWhitelist function
-```
+```solidity
 /**
 addAddressToWhitelist - This function adds the address of the sender to the whitelist
 */
