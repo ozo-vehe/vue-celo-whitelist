@@ -7,13 +7,13 @@ A whitelist dapp built on the celo blockchain using Vue.js for giving users earl
 - Requirement
 - Prerequisites
 - Tech stack
-- Building the smart contract
+- Build and deploy the smart contract
 - Building the frontend using Vue.js
 - Pushing to Github
 - Delpoying to vercel
 
 
-### Introduction
+## Introduction
 Celo was designed to enable a new universe of financial solutions accessible for mobile users, creating a global financial ecosystem where an end-user can onboard into the Celo ecosystem with just a mobile number. It offers the following key features
 - Layer-1 protocol
 - EVM compatible
@@ -26,13 +26,11 @@ Celo was designed to enable a new universe of financial solutions accessible for
 For more information, click [here](https://docs.celo.org/general) to learn more about celo
 
 
-### Requirements
+## Requirements
 - Writing the smart contract and deploying it on the celo blockchain using RemixIDE. Access should be given to the first 15 users for free who want to get in.
 - There should be a website where people can go and enter into the whitelist. We will use Vue.js to build it and interact with our smart contract
 
-Lets start building 🚀
-
-### Prerequisites
+## Prerequisites
 - You can write code in Vue.js
 - Have celo extension wallet installed and set up. If not, install [CeloExtensionWallet](https://chrome.google.com/webstore/detail/celoextensionwallet/kkilomkmpmkbdnfelcpgckmpcaemjcdh?hl=en) from Google Chrome store
 - Nodejs installed on your machine.
@@ -40,30 +38,33 @@ Lets start building 🚀
 - Remix IDE.
 - Command line or similar software installed.
 
-### Building The Smart Contract
+Lets start building 🚀
+
+
+## Build And Deploy The Smart Contract
 Now it's time to create a Solidity smart contract.
 You can use any editor you like to make the contract. However, for this part of the tutorial we recommend the online IDE [RemixIDE](https://remix.ethereum.org/)
-1.  Go to Remix
+### 1.  Go to Remix
 ![Remix IDE](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/remixIDE.png)
 
-2.  Create a new solidity file in the contract folder of remixIDE, named Whitelist.sol
+### 2.  Create a new solidity file in the contract folder of remixIDE, named Whitelist.sol
 
-3.  Copy and paste the follwing code into the new solidity file created
+### 3.  Copy and paste the follwing code into the new solidity file created
 
-3.1 Specify the solidity version and add a license 
+#### 3.1 Specify the solidity version and add a license 
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 ```
 
-3.2 Define the contract
+#### 3.2 Define the contract
 ```solidity
 contract Whitelist {
   // This is the contract's body, here you'll specify the logic for this contract.
 }
 ```
 
-3.3 Inside the contract create the following variables
+#### 3.3 Inside the contract create the following variables
 ```solidity
 // Max number of whitelisted addresses allowed to join the whitelist
 uint256 public maxWhitelistedAddresses = 10;
@@ -76,7 +77,7 @@ mapping(address => bool) public whitelistedAddresses;
 uint256 public numAddressesWhitelisted;
 ```
 
-3.4 Next, create the addAddressToWhitelist function
+#### 3.4 Next, create the addAddressToWhitelist function
 ```solidity
 /**
 addAddressToWhitelist - This function adds the address of the sender to the whitelist
@@ -96,7 +97,7 @@ function addAddressToWhitelist() public {
 }
 ```
 
-3.5 The final file should look like this
+#### 3.5 The final file should look like this
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
@@ -132,6 +133,37 @@ contract Whitelist {
 }
 ```
 
-4.  Deploy the smart contract on the celo blockchain
+### 4.  Deploying the smart contract on the celo blockchain
+Create a Celo wallet and deploy your contract to the Celo testnet alfajores.
+If you don't have celo extension wallet installed, follow the prompt below to install and set up your celo extension wallet
 
-### Building The Frontend With Vue
+#### 4.1. Install the [CeloExtensionWallet](https://chrome.google.com/webstore/detail/celoextensionwallet/kkilomkmpmkbdnfelcpgckmpcaemjcdh?hl=en) from the Google Chrome Store.
+![](https://raw.githubusercontent.com/dacadeorg/celo-development-101/main/content/gifs/celo_install_celo_extension_wallet.gif)
+
+#### 4.2. Create a wallet.
+![](https://raw.githubusercontent.com/dacadeorg/celo-development-101/main/content/gifs/celo_create_wallet.gif)
+
+#### 4.3. Get Celo token for the alfajores testnet from [https://celo.org/developers/faucet](https://celo.org/developers/faucet)
+![](https://raw.githubusercontent.com/dacadeorg/celo-development-101/main/content/gifs/celo_get_token_from_faucet.gif)
+
+#### 4.4. Install the Celo remix plugin and deploy your contract.
+In this tutorial, we will be deploy our smart contract, Whitelist.sol as opposed to Marketplace.sol shown in below
+
+
+![](https://raw.githubusercontent.com/dacadeorg/celo-development-101/main/content/gifs/celo_install_remix_plugin_and_deploy_contract.gif)
+  
+Great! You deployed your first contract on the Celo blockchain. Congratulations 🎉.
+
+In the next tutorial, you will learn how to create a front-end that will make use of your contract.
+
+
+## Building The Frontend With Vue
+To develop the website we will be using Vue. Vue is a javascript framework used to make websites and has the following advantages
+- Approachable: it builds on top of standard HTML, CSS and JavaScript with intuitive API and world-class documentation.
+- Performant: truly reactive, compiler-optimized rendering system that rarely requires manual optimization.
+- Versatile: a rich, incrementally adoptable ecosystem that scales between a library and a full-featured framework.
+To start with we will use vite which is the official Vue project scaffolding tool. Make sure you have an up-to-date version of Node.js installed, then run the following command in your command line terminal
+
+```
+npm init vue@latest
+```
