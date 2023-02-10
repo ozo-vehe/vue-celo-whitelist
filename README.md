@@ -48,10 +48,49 @@ You can use any editor you like to make the contract. However, for this part of 
 3.  Create a new solidity file in remix, named mood.sol
 4.  Write the contract
 
- 
-
-Specify the solidity version and add a license
+4.1 Specify the solidity version and add a license
 ```
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
+```
+
+
+4.2 Define the contract
+```
+contract Whitelist {
+  // This is the contract's body, here you'll specify the logic for this contract.
+}
+```
+
+4.3 Inside the contract create the following variables
+```
+// Max number of whitelisted addresses allowed to join the whitelist
+uint256 public maxWhitelistedAddresses = 10;
+
+// Create a mapping of whitelistedAddresses
+// if an address is whitelisted, we would set it to true, it is false by default for all other addresses.
+mapping(address => bool) public whitelistedAddresses;
+
+// numAddressesWhitelisted would be used to keep track of how many addresses have been whitelisted
+uint256 public numAddressesWhitelisted;
+```
+
+4.4 Next, create the addAddressToWhitelist function
+```
+/**
+addAddressToWhitelist - This function adds the address of the sender to the whitelist
+*/
+function addAddressToWhitelist() public {
+ // check if the user has already been whitelisted
+ require(!whitelistedAddresses[msg.sender], "Sender has already been whitelisted");
+ 
+ // check if the numAddressesWhitelisted < maxWhitelistedAddresses, if not then throw an error.
+ require(numAddressesWhitelisted < maxWhitelistedAddresses, "More addresses cant be added, limit reached");
+ 
+ // Add the address which called the function to the whitelistedAddress array
+ whitelistedAddresses[msg.sender] = true;
+ 
+ // Increase the number of whitelisted addresses
+ numAddressesWhitelisted += 1;
+}
 ```
