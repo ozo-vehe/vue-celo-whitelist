@@ -132,4 +132,6 @@ contract Whitelist {
 }
 ```
 
+4.  Deploy the smart contract on the celo blockchain
+
 ### Building The Frontend With Vue
