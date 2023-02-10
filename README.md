@@ -44,26 +44,26 @@ Lets start building 🚀
 Now it's time to create a Solidity smart contract.
 You can use any editor you like to make the contract. However, for this part of the tutorial we recommend the online IDE [RemixIDE](https://remix.ethereum.org/)
 1.  Go to Remix
-![Remix IDE](https://github.com/ozo-vehe/vue-celo-whitelist/remixIDE.png) 
-2.  Check out the "Solidity Compiler", and "Deploy and Run Transactions" tabs. If they are not present, enable them in the plugin manager
-3.  Create a new solidity file in remix, named mood.sol
-4.  Write the contract
+![Remix IDE](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/remixIDE.png)
 
-4.1 Specify the solidity version and add a license 
+2.  Create a new solidity file in the contract folder of remixIDE, named Whitelist.sol
+
+3.  Copy and paste the follwing code into the new solidity file created
+
+3.1 Specify the solidity version and add a license 
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 ```
 
-
-4.2 Define the contract
+3.2 Define the contract
 ```solidity
 contract Whitelist {
   // This is the contract's body, here you'll specify the logic for this contract.
 }
 ```
 
-4.3 Inside the contract create the following variables
+3.3 Inside the contract create the following variables
 ```solidity
 // Max number of whitelisted addresses allowed to join the whitelist
 uint256 public maxWhitelistedAddresses = 10;
@@ -76,22 +76,60 @@ mapping(address => bool) public whitelistedAddresses;
 uint256 public numAddressesWhitelisted;
 ```
 
-4.4 Next, create the addAddressToWhitelist function
+3.4 Next, create the addAddressToWhitelist function
 ```solidity
 /**
 addAddressToWhitelist - This function adds the address of the sender to the whitelist
 */
 function addAddressToWhitelist() public {
- // check if the user has already been whitelisted
- require(!whitelistedAddresses[msg.sender], "Sender has already been whitelisted");
+  // check if the user has already been whitelisted
+  require(!whitelistedAddresses[msg.sender], "Sender has already been whitelisted");
  
- // check if the numAddressesWhitelisted < maxWhitelistedAddresses, if not then throw an error.
- require(numAddressesWhitelisted < maxWhitelistedAddresses, "More addresses cant be added, limit reached");
+  // check if the numAddressesWhitelisted < maxWhitelistedAddresses, if not then throw an error.
+  require(numAddressesWhitelisted < maxWhitelistedAddresses, "More addresses cant be added, limit reached");
  
- // Add the address which called the function to the whitelistedAddress array
- whitelistedAddresses[msg.sender] = true;
+  // Add the address which called the function to the whitelistedAddress array
+  whitelistedAddresses[msg.sender] = true;
  
- // Increase the number of whitelisted addresses
- numAddressesWhitelisted += 1;
+  // Increase the number of whitelisted addresses
+  numAddressesWhitelisted += 1;
 }
 ```
+
+3.5 The final file should look like this
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.9;
+
+contract Whitelist {
+  // This is the contract's body, here you'll specify the logic for this contract.
+  // Max number of whitelisted addresses allowed to join the whitelist
+  uint256 public maxWhitelistedAddresses = 10;
+
+  // Create a mapping of whitelistedAddresses
+  // if an address is whitelisted, we would set it to true, it is false by default for all other addresses.
+  mapping(address => bool) public whitelistedAddresses;
+
+  // numAddressesWhitelisted would be used to keep track of how many addresses have been whitelisted
+  uint256 public numAddressesWhitelisted;
+  
+  /**
+  addAddressToWhitelist - This function adds the address of the sender to the whitelist
+  */
+  function addAddressToWhitelist() public {
+    // check if the user has already been whitelisted
+    require(!whitelistedAddresses[msg.sender], "Sender has already been whitelisted");
+ 
+    // check if the numAddressesWhitelisted < maxWhitelistedAddresses, if not then throw an error.
+    require(numAddressesWhitelisted < maxWhitelistedAddresses, "More addresses cant be added, limit reached");
+ 
+    // Add the address which called the function to the whitelistedAddress array
+    whitelistedAddresses[msg.sender] = true;
+ 
+    // Increase the number of whitelisted addresses
+    numAddressesWhitelisted += 1;
+  }
+}
+```
+
+### Building The Frontend With Vue
