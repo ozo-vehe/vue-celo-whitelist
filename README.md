@@ -163,31 +163,35 @@ To develop the website we will be using Vue, a javascript framework used to buil
 - Performant: truly reactive, compiler-optimized rendering system that rarely requires manual optimization.
 - Versatile: a rich, incrementally adoptable ecosystem that scales between a library and a full-featured framework.
 
-1.  To start with, we will use vite, the official Vue project scaffolding tool. 
+#### 1.  To start with, we will use vite, the official Vue project scaffolding tool. 
 Make sure you have an up-to-date version of Node.js installed, then run the following command in your command line terminal
 
 ```
 npm create vite@latest vue-celo-whitelist -- --template vue
 ```
-2.  Navigate to the the project.
+#### 2.  Navigate to the the project.
 
 ```
 cd vue-celo-whitelist
 ```
-3.  Install the required dependencies.
+
+#### 3.  Install the required dependencies.
 ```
 npm install
 ```
-4.  Start up a local development server.
+
+#### 4.  Start up a local development server.
 ```
 npm run dev
 ```
 The project directory should look something like this
+
 (https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/remixIDE.png)
 
-5.  In the src folder, delete the components folder(as the App.vue file will be sufficient for this tutorial) and the vue.svg file in the assets folder. Replace this file with this image [whitelist.png](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_images/whitelist.png).
 
-6.  In the App.vue file, replace the code with the following code
+#### 5.  In the src folder, delete the components folder(as the App.vue file will be sufficient for this tutorial) and the vue.svg file in the assets folder. Replace this file with this image [whitelist.png](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_images/whitelist.png).
+
+#### 6.  In the App.vue file, replace the code with the following code
 
 ```vue
 <script setup>
@@ -315,7 +319,7 @@ The project directory should look something like this
 
 ```
 
-7.  Go to the styles.css file in the src folder and replace the code with the following
+#### 7.  Go to the styles.css file in the src folder and replace the code with the following
 ```css
 body {
   margin: 0px;
@@ -324,9 +328,58 @@ body {
 }
 ```
 
-8.  Your project should look like this
+
+Your project should look like this
+
+
 ![image](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_images/image1.png)
 
+
+#### 8.  We will now install a few packages needed to interact with our smart contract deployed on the celo blockchain. Run the following command on the terminal
+
+```
+npm install web3 @celo/contractkit
+```
+
+
+```
+npm install vite-plugin-node-polyfills
+```
+
+After installing these packages, open vite.config.js file in the root directory and replace the code with the following code
+
+```js
+  import { defineConfig } from 'vite';
+  import vue from '@vitejs/plugin-vue';
+  import { nodePolyfills } from 'vite-plugin-node-polyfills';
+
+  // https://vitejs.dev/config/
+  export default defineConfig({
+    plugins: [
+      vue(),
+      nodePolyfills({
+        protocolImports: true,
+      })
+    ]
+  })
+  
+```
+
+#### 9. In the App.vue file, import the packages installed
+
+```vue
+<script setup>
+  import { ref, reactive } from "vue";
+  
+  import Web3 from "web3";
+  import { newKitFromWeb3 } from "@celo/contractkit";
+  import { contractAbi, contractAddress } from './contract';
+  
+  ...
+
+</script>
+
+```
 First set up your vue project(using vite or cli);
 Develop the frontend without adding any functions for interactivity, variables initialized with dummy data and styles added for beautification
 Go to the styles.css folder, delete all the styles defined there and add the following lines of css code. This is to prevent style errors from clashing css style rules
