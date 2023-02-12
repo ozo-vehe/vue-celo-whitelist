@@ -380,6 +380,25 @@ After installing these packages, open vite.config.js file in the root directory 
 </script>
 
 ```
+
+
+#### 10. We will now write three functions, one to connect to the celo extension wallet, one to get the user's balance in cUSD and the last function to add a user to the whitelist.
+
+##### 10.1. To connect to the celo extension wallet, we will create the connectWallet() function
+
+```vue
+
+<script setup>
+  import { ref, reactive } from "vue";
+  
+  import Web3 from "web3";
+  import { newKitFromWeb3 } from "@celo/contractkit";
+  import { contractAbi, contractAddress } from './contract';
+  
+  
+
+</script>
+```
 First set up your vue project(using vite or cli);
 Develop the frontend without adding any functions for interactivity, variables initialized with dummy data and styles added for beautification
 Go to the styles.css folder, delete all the styles defined there and add the following lines of css code. This is to prevent style errors from clashing css style rules
