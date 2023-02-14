@@ -154,6 +154,17 @@ In this tutorial, we will be deploy our smart contract, Whitelist.sol as opposed
   
 Great! You deployed your first contract on the Celo blockchain. Congratulations 🎉.
 
+### 5.  Saving the smart contract abi and address
+When you compile your contract in Remix, Remix also creates the ABI in the form of a JSON for your contract. Copy the JSON and save it.
+
+![](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_assets/contract_abi.png)
+
+
+It also creates an address of the contract which you need in order to find your contract and interact with it. Copy the address and save it.
+
+![](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_assets/contract_address.png)
+
+
 In the next tutorial, you will learn how to create a front-end that will make use of your contract.
 
 
@@ -190,6 +201,16 @@ The project directory should look something like this
 
 
 #### 5.  In the src folder, delete the components folder(as the App.vue file will be sufficient for this tutorial) and the vue.svg file in the assets folder. Replace this file with this image [whitelist.png](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_images/whitelist.png).
+
+#### 6.  Create a new file called contract.js and paste in the following code
+
+```js
+export const contractAbi = YOUR_CONTRACT_ABI;
+export const contractAddress = YOUR_CONTRACT_ADDRESS;
+```
+
+Replace YOUR_CONTRACT_ABI with the ABI of your Whitelist Contract.
+Replace YOUR_CONTRACT_ADDRESS with the address of the whitelist contract that you deployed.
 
 #### 6.  In the App.vue file, replace the code with the following code
 
@@ -705,8 +726,40 @@ The final code for the App.vue file should look like this with the final changes
   }
 </style>
 
+```
+
+
+
+## Pushing Code To Github
+We will show you how you can host your project on GitHub so other people can interact with it.
+After testing your DApp and checking that everything behaves correctly, you can build your DApp in the command-line interface with the command.
 
 ```
+npm run build
+```
+
+This will create a dist folder with all your application compressed into seperate files(html, css, javascript and assets used for your project. This folder contains the final project. Rename this folder to docs.
+
+Upload your project to a new GitHub repository.
+If needed, you can create a readme file for your project that explains your dapp and includes a link to your Dapp.
+
+
+## Deploying To Vercel
+We will now deploy your dApp, so that everyone can see your website and you can share it with everyone.
+
+Follow these steps to deploy your DApp to vercel
+1.  Go to Vercel and sign in with your GitHub.
+2.  Then click on Add New button, select Project from the dropdown menu and then select your Whitelist DApp repo from the options giving.
+3.  When configuring your new project, Vercel will allow you to customize your Root Directory
+4.  Click Edit next to Root Directory and set it to dist
+5.  Select the Framework as Vue.js
+6.  Click Deploy
+
+Now you can see your deployed website by going to your dashboard, selecting your project, and copying the URL beneath domains!
+
+That’s it! Congratulations! You are done with the tutorial and have build a DApp using Vue and celo, pushed your code to Github and deployed it to vercel! 🎉
+
+
 First set up your vue project(using vite or cli);
 Develop the frontend without adding any functions for interactivity, variables initialized with dummy data and styles added for beautification
 Go to the styles.css folder, delete all the styles defined there and add the following lines of css code. This is to prevent style errors from clashing css style rules
