@@ -158,12 +158,583 @@ In the next tutorial, you will learn how to create a front-end that will make us
 
 
 ## Building The Frontend With Vue
-To develop the website we will be using Vue. Vue is a javascript framework used to make websites and has the following advantages
+To develop the website we will be using Vue, a javascript framework used to build interactive websites. It offers the following;
 - Approachable: it builds on top of standard HTML, CSS and JavaScript with intuitive API and world-class documentation.
 - Performant: truly reactive, compiler-optimized rendering system that rarely requires manual optimization.
 - Versatile: a rich, incrementally adoptable ecosystem that scales between a library and a full-featured framework.
-To start with we will use vite which is the official Vue project scaffolding tool. Make sure you have an up-to-date version of Node.js installed, then run the following command in your command line terminal
+
+#### 1.  To start with, we will use vite, the official Vue project scaffolding tool. 
+Make sure you have an up-to-date version of Node.js installed, then run the following command in your command line terminal
 
 ```
-npm init vue@latest
+npm create vite@latest vue-celo-whitelist -- --template vue
 ```
+#### 2.  Navigate to the the project.
+
+```
+cd vue-celo-whitelist
+```
+
+#### 3.  Install the required dependencies.
+```
+npm install
+```
+
+#### 4.  Start up a local development server.
+```
+npm run dev
+```
+The project directory should look something like this
+
+(https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/remixIDE.png)
+
+
+#### 5.  In the src folder, delete the components folder(as the App.vue file will be sufficient for this tutorial) and the vue.svg file in the assets folder. Replace this file with this image [whitelist.png](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_images/whitelist.png).
+
+#### 6.  In the App.vue file, replace the code with the following code
+
+```vue
+<script setup>
+  import { ref, reactive } from "vue";
+
+  // DATA/VARIABLES
+  const isConnected = ref(false); // variable for holding the state of a wallet, if its connected or not
+  const loading = ref(false); // variable to show or hide spinner animation
+  const isWhitelisted = ref(false); // checks if an address has already been whitelisted or not
+
+</script>
+
+<template>
+  <main>
+    <nav>
+      <button v-if="isConnected" disabled>Wallet Connected</button>
+      <button v-else>
+        <span v-if="loading" class="loader"></span>
+        <span v-else>Connect Wallet</span>
+      </button>
+      <p v-if="isConnected">0.00 <span>cUSD</span></p>
+      <p v-else>0.00 <span>cUSD</span></p>
+    </nav>
+
+    <div class="whitelist">
+      <div class="whitelistHeader">
+        <h1>Welcome to <span>WhiteListedChain</span></h1>
+        <p>
+          Secure, transparent access to decentralized networks. 
+          Click the button below to get early access.
+        </p>
+        <div>
+          <p>0 have already joined the Whitelist</p>
+          <p v-if="isWhitelisted" class="whitelisted">Thanks for joining the WhiteListedChain's whitelist</p>
+          <button v-else>Get Early Access Pass</button>
+        </div>
+      </div>
+
+      <div class="whitelistImage">
+        <img src="./assets/whitelist.png" />
+      </div>
+    </div>
+  </main>
+</template>
+
+<style scoped>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+  main {
+    font-family: 'Montserrat';
+    font-size: 16px;
+    background-color: #fff;
+  }
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5%;
+  }
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    min-width: 150px;
+    height: 45px;
+    overflow: hidden;
+    background-color: #e096e0;
+    color: #fff;
+    padding: 13px 30px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: default;
+    background-color: #e096e085;
+  }
+  button .loader {
+    display: inline-block;
+    border: thin solid #e096e0;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border-left: 2px solid #fff;
+    animation: spinner 0.3s linear infinite;
+  }
+  @keyframes spinner {
+    from { transform: rotate(0deg);}
+    to { transform: rotate(360deg);}
+  }
+
+  .whitelist {
+    display: flex;
+    min-height: calc(100vh - 130px);
+    justify-content: center;
+    gap: 10px 30px;
+    align-items: center;
+    padding: 10px 5%;
+  }
+  .whitelist h1 {
+    font-size: 4rem;
+  }
+  .whitelist h1 span {
+    color: #e096e0;
+  }
+
+  .whitelist .whitelistHeader {
+    width: 600px;
+  }
+
+  .whitelisted {
+    color: #e096e0;
+  }
+
+  .whitelist .whitelistImage {
+    width: 400px;
+    height: 300px;
+  }
+  .whitelistImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+</style>
+
+```
+
+#### 7.  Go to the styles.css file in the src folder and replace the code with the following
+```css
+body {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+```
+
+
+Your project should look like this
+
+
+![image](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_images/image1.png)
+
+
+#### 8.  We will now install a few packages needed to interact with our smart contract deployed on the celo blockchain. Run the following command on the terminal
+
+```
+npm install web3 @celo/contractkit
+```
+```
+npm install vite-plugin-node-polyfills
+```
+
+After installing these packages, open vite.config.js file in the root directory and replace the code with the following code
+
+```js
+  import { defineConfig } from 'vite';
+  import vue from '@vitejs/plugin-vue';
+  import { nodePolyfills } from 'vite-plugin-node-polyfills';
+
+  // https://vitejs.dev/config/
+  export default defineConfig({
+    plugins: [
+      vue(),
+      nodePolyfills({
+        protocolImports: true,
+      })
+    ]
+  })
+  
+```
+
+#### 9. In the App.vue file, import the packages installed and add the following variables as they will be need for this tutorial
+
+```vue
+<script setup>
+  import { ref, reactive } from "vue";
+  
+  import Web3 from "web3";
+  import { newKitFromWeb3 } from "@celo/contractkit";
+  import { contractAbi, contractAddress } from './contract';
+  
+  ...
+  
+  const ERC20_DECIMALS = 18;  // for balance conversion to a readable amount
+  let kit = reactive(null);
+  let cUSDBalance = ref(null);  // for holding the user's cUSD balance
+  const numberOfWhitelistedAddresses = ref(0);  //  For storing the number of whitelisted addresses
+  let contract = reactive(null);  //  to store a contract instance
+
+</script>
+
+```
+
+
+#### 10. We will now write three functions, one to connect to the celo extension wallet, one to get the user's balance in cUSD and the last function to add a user to the whitelist.
+
+##### 10.1. To connect to the celo extension wallet, we will create the connectWallet() function
+
+```vue
+
+<script setup>
+  ...
+ 
+  // Connect to the cele extension wallet
+  const connectWallet = async() => {
+    // Check if celo extension is installed else, user is prompted to install the extension
+    if(window.celo) {
+      try {
+        loading.value = true;
+
+        // Enable the celo extension to connect to an account created
+        await window.celo.enable()
+        
+        // Using Web3 imported, create a new web3 instance passing in the window.celo as the provider
+        const web3 = new Web3(window.celo)
+        
+        // assign the web3 instance to the variable kit using newKitFromWeb3 and passing the instance as an argument
+        kit = newKitFromWeb3(web3);
+
+        // get the connected address 
+        const accounts = await kit.web3.eth.getAccounts()
+        
+        // assign the connected address to kit.deafulAccount
+        kit.defaultAccount = accounts[0];
+
+        // Call the getBalance function to get the users cUSD balance
+        await getBalance();
+
+        // Set isConnected to true and loading to false
+        isConnected.value = true;
+        loading.value = false;
+
+        // Create a new contract instance using the contract info saved in contract.js file(contractAbi and contractAddress) and assing it to the reactive contract variable created earlier
+        contract = new kit.web3.eth.Contract(contractAbi, contractAddress)
+
+        // Get the number of whitelisted addresses and assign it to the numberOfWhiteListedAddresses ref variable
+        numberOfWhitelistedAddresses.value =  await contract.methods.numAddressesWhitelisted().call();
+        
+        // Check if the connect account address has been whitelisted or not and assign it to the isWhitelisted ref variable
+        isWhitelisted.value = await contract.methods.whitelistedAddresses(kit.defaultAccount).call();
+      } catch (error) {
+        console.log(error)
+      }
+    } else {
+      alert("Celo Extension Walltet Not Installed");
+    }
+  }
+
+</script>
+```
+
+#### 10.2.  To get user's balance in cUSD, we will create the getBalance() function
+
+```vue
+<script setup>
+  ...
+  
+  // Get user balance in cUSD
+  const getBalance = async() => {
+    // Using the getTotalBalance function from kit, get the total balance and assign it to a totalBalance variable
+    const totalBalance = await kit.getTotalBalance(kit.defaultAccount)
+    
+    // Using the ERC20_DECIMAL constant, convert the total balance to a readable amount set to 2 decimal places
+    // assign the value to the cUSDBalance ref created earlier 
+    cUSDBalance.value = totalBalance.cUSD.shiftedBy(-ERC20_DECIMALS).toFixed(2)
+  }
+
+</script>
+```
+
+#### 10.3.  To add a user's address to the whitelist, we will create the joinWhitelist() function
+
+```vue
+<script setup>
+
+  ...
+  
+  // Add an account to the whitelist
+  const joinWhitelist = async() => {
+    // Checks if a wallet is connected, if not, alerts users to connect their wallet (the celo extension wallet)
+    if(isConnected.value) {
+      try {
+        // Create a new contract instance with the HelloWorld contract info
+        await contract.methods.addAddressToWhitelist().send({ from: kit.defaultAccount })
+    
+        // Get the number of whitelisted addresses and assign it to the numberOfWhitelistedAddresses ref variable
+        numberOfWhitelistedAddresses.value =  await contract.methods.numAddressesWhitelisted().call();
+        
+        // Change the is whitlisted ref variable to true for this address
+        isWhitelisted.value = true;
+      } catch(error) {
+        alert(error);
+      }
+    }
+    else {
+      alert("Connect Wallet (A Celo Extension Wallet)");
+    }
+  }
+</script>
+```
+
+The final code for the App.vue file should look like this with the final changes made by replacing hard coded values with their respective
+
+```vue
+<script setup>
+  import { ref, reactive } from "vue";
+  import Web3 from "web3";
+  import { newKitFromWeb3 } from "@celo/contractkit";
+  import { contractAbi, contractAddress } from './contract';
+
+  // DATA/VARIABLES
+  const isConnected = ref(false);
+  const ERC20_DECIMALS = 18;
+  let kit = reactive(null);
+  let cUSDBalance = ref(null);
+  const loading = ref(false);
+  const numberOfWhitelistedAddresses = ref(0);
+  const isWhitelisted = ref(false);
+  let contract = reactive(null);
+
+  // METHODS/FUNCTIONS
+
+  // Get user balance in cUSD
+  const getBalance = async() => {
+    // Using the getTotalBalance function from kit, get the total balance and assign it to a totalBalance variable
+    const totalBalance = await kit.getTotalBalance(kit.defaultAccount)
+    
+    // Using the ERC20_DECIMAL constant, convert the total balance to a readable amount set to 2 decimal places
+    // assign the value to the cUSDBalance ref created earlier 
+    cUSDBalance.value = totalBalance.cUSD.shiftedBy(-ERC20_DECIMALS).toFixed(2)
+  }
+
+  // Connect to the cele extension wallet
+  const connectWallet = async() => {
+    // Check if celo extension is installed else, user is prompted to install the extension
+    if(window.celo) {
+      try {
+        loading.value = true;
+
+        // Enable the celo extension to connect to an account created
+        await window.celo.enable()
+        
+        // Using Web3 imported, create a new web3 instance passing in the window.celo as the provider
+        const web3 = new Web3(window.celo)
+        
+        // assign the web3 instance to the variable kit using newKitFromWeb3 and passing the instance as an argument
+        kit = newKitFromWeb3(web3);
+
+        // get the connected address 
+        const accounts = await kit.web3.eth.getAccounts()
+        
+        // assign the connected address to kit.deafulAccount
+        kit.defaultAccount = accounts[0];
+
+        // Call the getBalance function to get the users cUSD balance
+        await getBalance();
+
+        // Set isConnected to true and loading to false
+        isConnected.value = true;
+        loading.value = false;
+
+        // Create a new contract instance using the contract info saved in contract.js file(contractAbi and contractAddress) and assing it to the reactive contract variable created earlier
+        contract = new kit.web3.eth.Contract(contractAbi, contractAddress)
+
+        // Get the number of whitelisted addresses and assign it to the numberOfWhiteListedAddresses ref variable
+        numberOfWhitelistedAddresses.value =  await contract.methods.numAddressesWhitelisted().call();
+        
+        // Check if the connect account address has been whitelisted or not and assign it to the isWhitelisted ref variable
+        isWhitelisted.value = await contract.methods.whitelistedAddresses(kit.defaultAccount).call();
+      } catch (error) {
+        console.log(error)
+      }
+    } else {
+      alert("Celo Extension Walltet Not Installed");
+    }
+  }
+  
+  // Add an account to the whitelist
+  const joinWhitelist = async() => {
+    // Checks if a wallet is connected, if not, alerts users to connect their wallet (the celo extension wallet)
+    if(isConnected.value) {
+      try {
+        // Create a new contract instance with the HelloWorld contract info
+        await contract.methods.addAddressToWhitelist().send({ from: kit.defaultAccount })
+        
+        // Get the number of whitelisted addresses and assign it to the numberOfWhitelistedAddresses ref variable
+        numberOfWhitelistedAddresses.value =  await contract.methods.numAddressesWhitelisted().call();
+        
+        // Change the is whitlisted ref variable to true for this address
+        isWhitelisted.value = true;
+      } catch(error) {
+        alert(error);
+      }
+    }
+    else {
+      alert("Connect Wallet (A Celo Extension Wallet)");
+    }
+  }
+</script>
+
+<template>
+  <main>
+    <nav>
+      <button v-if="isConnected" disabled>Wallet Connected</button>
+      <button v-else @click="connectWallet">
+        <span v-if="loading" class="loader"></span>
+        <span v-else>Connect Wallet</span>
+      </button>
+      <p v-if="isConnected">{{ cUSDBalance }} <span>cUSD</span></p>
+      <p v-else>0.00 <span>cUSD</span></p>
+    </nav>
+
+    <div class="whitelist">
+      <div class="whitelistHeader">
+        <h1>Welcome to <span>WhiteListedChain</span></h1>
+        <p>
+          Secure, transparent access to decentralized networks. 
+          Click the button below to get early access.
+        </p>
+        <div>
+          <p>{{ numberOfWhitelistedAddresses }} have already joined the Whitelist</p>
+          <p v-if="isWhitelisted" class="whitelisted">Thanks for joining the WhiteListedChain's whitelist</p>
+          <button v-else @click="joinWhitelist">Get Early Access Pass</button>
+        </div>
+      </div>
+
+      <div class="whitelistImage">
+        <img src="./assets/whitelist.png" />
+      </div>
+    </div>
+  </main>
+</template>
+
+<style scoped>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+  main {
+    font-family: 'Montserrat';
+    font-size: 16px;
+    background-color: #fff;
+  }
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5%;
+  }
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    min-width: 150px;
+    height: 45px;
+    overflow: hidden;
+    background-color: #e096e0;
+    color: #fff;
+    padding: 13px 30px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: default;
+    background-color: #e096e085;
+  }
+  button .loader {
+    display: inline-block;
+    border: thin solid #e096e0;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border-left: 2px solid #fff;
+    animation: spinner 0.3s linear infinite;
+  }
+  @keyframes spinner {
+    from { transform: rotate(0deg);}
+    to { transform: rotate(360deg);}
+  }
+
+  .whitelist {
+    display: flex;
+    min-height: calc(100vh - 130px);
+    justify-content: center;
+    gap: 10px 30px;
+    align-items: center;
+    padding: 10px 5%;
+  }
+  .whitelist h1 {
+    font-size: 4rem;
+  }
+  .whitelist h1 span {
+    color: #e096e0;
+  }
+
+  .whitelist .whitelistHeader {
+    width: 600px;
+  }
+
+  .whitelisted {
+    color: #e096e0;
+  }
+
+  .whitelist .whitelistImage {
+    width: 400px;
+    height: 300px;
+  }
+  .whitelistImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+</style>
+
+
+```
+First set up your vue project(using vite or cli);
+Develop the frontend without adding any functions for interactivity, variables initialized with dummy data and styles added for beautification
+Go to the styles.css folder, delete all the styles defined there and add the following lines of css code. This is to prevent style errors from clashing css style rules
+
+Install packages
+  1.  celo contrack kit
+  2.  web3 from web3.js using nmp install web3
+  3.  install vite-plugin-node-polyfills, this is to prevent polyfills errors that usually arises
+Import installed packages
+Open vite.config.js file or vue.config.js file(if vue cli is used to set up the project)
+paste the following code snippet
+  import { defineConfig } from 'vite';
+  import vue from '@vitejs/plugin-vue';
+  import { nodePolyfills } from 'vite-plugin-node-polyfills';
+
+  // https://vitejs.dev/config/
+  export default defineConfig({
+    plugins: [
+      vue(),
+      nodePolyfills({
+        protocolImports: true,
+      })
+    ]
+  })
+
+Writing the functions
+  1.  Connect wallet function (here the only function to be implemented is the connecet to wallet function first)
+  2.  Create a contract instance using the contract details(that is, the contractAbi and the contractAddress) stored in contract.js file
+  3.  Get balance function, call this function in the connectWallet function to get the users balance immediately
+  4.  Join the whitelist function
+  5.  Connect all the functions that is, add check in the connectWallet function to check if an address has already been whitelisted
