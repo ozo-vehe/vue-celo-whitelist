@@ -731,16 +731,8 @@ The final code for the App.vue file should look like this with the final changes
 
 
 ## Pushing Code To Github
-We will show you how you can host your project on GitHub so other people can interact with it.
-After testing your DApp and checking that everything behaves correctly, you can build your DApp in the command-line interface with the command.
-
-```
-npm run build
-```
-
-This will create a dist folder with all your application compressed into seperate files(html, css, javascript and assets used for your project. This folder contains the final project. Rename this folder to docs.
-
-Upload your project to a new GitHub repository.
+We will show you how you can push your project on GitHub so other people can interact with it.
+After testing your DApp and checking that everything behaves correctly, upload your project to a new GitHub repository.
 If needed, you can create a readme file for your project that explains your dapp and includes a link to your Dapp.
 
 
@@ -750,10 +742,9 @@ We will now deploy your dApp, so that everyone can see your website and you can 
 Follow these steps to deploy your DApp to vercel
 1.  Go to Vercel and sign in with your GitHub.
 2.  Then click on Add New button, select Project from the dropdown menu and then select your Whitelist DApp repo from the options giving.
-3.  When configuring your new project, Vercel will allow you to customize your Root Directory
-4.  Click Edit next to Root Directory and set it to dist
-5.  Select the Framework as Vue.js
-6.  Click Deploy
+3.  When configuring your new project, Vercel will allow you to customize your Root Directory. However for this project we will leave it at the Root Directory
+4.  Select the Framework as Vite
+5.  Click Deploy
 
 Now you can see your deployed website by going to your dashboard, selecting your project, and copying the URL beneath domains!
 
