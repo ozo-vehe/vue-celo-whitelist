@@ -197,20 +197,19 @@ npm run dev
 ```
 The project directory should look something like this
 
-(https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/remixIDE.png)
+![](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/remixIDE.png)
 
 
 #### 5.  In the src folder, delete the components folder(as the App.vue file will be sufficient for this tutorial) and the vue.svg file in the assets folder. Replace this file with this image [whitelist.png](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_images/whitelist.png).
 
-#### 6.  Create a new file called contract.js and paste in the following code
+#### 6.  Create a new file called contract.js in the src folder and paste in the following code
 
 ```js
 export const contractAbi = YOUR_CONTRACT_ABI;
 export const contractAddress = YOUR_CONTRACT_ADDRESS;
 ```
 
-Replace YOUR_CONTRACT_ABI with the ABI of your Whitelist Contract.
-Replace YOUR_CONTRACT_ADDRESS with the address of the whitelist contract that you deployed.
+Replace YOUR_CONTRACT_ABI with the ABI of your Whitelist Contract and YOUR_CONTRACT_ADDRESS with the address of the whitelist contract that you deployed. All this was saved earlier during the tutorial
 
 #### 6.  In the App.vue file, replace the code with the following code
 
@@ -749,36 +748,3 @@ Follow these steps to deploy your DApp to vercel
 Now you can see your deployed website by going to your dashboard, selecting your project, and copying the URL beneath domains!
 
 That’s it! Congratulations! You are done with the tutorial and have build a DApp using Vue and celo, pushed your code to Github and deployed it to vercel! 🎉
-
-
-First set up your vue project(using vite or cli);
-Develop the frontend without adding any functions for interactivity, variables initialized with dummy data and styles added for beautification
-Go to the styles.css folder, delete all the styles defined there and add the following lines of css code. This is to prevent style errors from clashing css style rules
-
-Install packages
-  1.  celo contrack kit
-  2.  web3 from web3.js using nmp install web3
-  3.  install vite-plugin-node-polyfills, this is to prevent polyfills errors that usually arises
-Import installed packages
-Open vite.config.js file or vue.config.js file(if vue cli is used to set up the project)
-paste the following code snippet
-  import { defineConfig } from 'vite';
-  import vue from '@vitejs/plugin-vue';
-  import { nodePolyfills } from 'vite-plugin-node-polyfills';
-
-  // https://vitejs.dev/config/
-  export default defineConfig({
-    plugins: [
-      vue(),
-      nodePolyfills({
-        protocolImports: true,
-      })
-    ]
-  })
-
-Writing the functions
-  1.  Connect wallet function (here the only function to be implemented is the connecet to wallet function first)
-  2.  Create a contract instance using the contract details(that is, the contractAbi and the contractAddress) stored in contract.js file
-  3.  Get balance function, call this function in the connectWallet function to get the users balance immediately
-  4.  Join the whitelist function
-  5.  Connect all the functions that is, add check in the connectWallet function to check if an address has already been whitelisted
