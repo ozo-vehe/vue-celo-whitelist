@@ -225,7 +225,8 @@ Replace YOUR_CONTRACT_ABI with the ABI of your Whitelist Contract and YOUR_CONTR
 
   // DATA/VARIABLES
   const isConnected = ref(false); // variable for holding the state of a wallet, if its connected or not
-  const loading = ref(false); // variable to show or hide spinner animation
+  const walletLoading = ref(false); // variable to show or hide spinner animation for connwct wallet button
+  const accessLoading = ref(false); // variable to show or hide spinner animation for get access button
   const isWhitelisted = ref(false); // checks if an address has already been whitelisted or not
 
 </script>
@@ -235,7 +236,7 @@ Replace YOUR_CONTRACT_ABI with the ABI of your Whitelist Contract and YOUR_CONTR
     <nav>
       <button v-if="isConnected" disabled>Wallet Connected</button>
       <button v-else>
-        <span v-if="loading" class="loader"></span>
+        <span v-if="walletLoading" class="loader"></span>
         <span v-else>Connect Wallet</span>
       </button>
       <p v-if="isConnected">0.00 <span>cUSD</span></p>
@@ -252,7 +253,10 @@ Replace YOUR_CONTRACT_ABI with the ABI of your Whitelist Contract and YOUR_CONTR
         <div>
           <p>0 have already joined the Whitelist</p>
           <p v-if="isWhitelisted" class="whitelisted">Thanks for joining the WhiteListedChain's whitelist</p>
-          <button v-else>Get Early Access Pass</button>
+          <button v-else>
+            <span v-if="accessLoading" class="loader"></span>
+            <span v-else>Get Early Access Pass</span>
+          </button>
         </div>
       </div>
 
@@ -357,8 +361,7 @@ body {
 
 Your project should look like this
 
-
-![image](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_images/image1.png)
+![](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_assets/image1.png)
 
 
 #### 8.  We will now install a few packages needed to interact with our smart contract deployed on the celo blockchain. Run the following command on the terminal
@@ -426,7 +429,7 @@ After installing these packages, open vite.config.js file in the root directory 
     // Check if celo extension is installed else, user is prompted to install the extension
     if(window.celo) {
       try {
-        loading.value = true;
+        walletLoading.value = true;
 
         // Enable the celo extension to connect to an account created
         await window.celo.enable()
@@ -448,7 +451,7 @@ After installing these packages, open vite.config.js file in the root directory 
 
         // Set isConnected to true and loading to false
         isConnected.value = true;
-        loading.value = false;
+        walletLoading.value = false;
 
         // Create a new contract instance using the contract info saved in contract.js file(contractAbi and contractAddress) and assing it to the reactive contract variable created earlier
         contract = new kit.web3.eth.Contract(contractAbi, contractAddress)
@@ -497,6 +500,9 @@ After installing these packages, open vite.config.js file in the root directory 
   
   // Add an account to the whitelist
   const joinWhitelist = async() => {
+    // Change the accessLoading ref variable to false to stop the loaing animation
+    accessLoading.value = true;    
+        
     // Checks if a wallet is connected, if not, alerts users to connect their wallet (the celo extension wallet)
     if(isConnected.value) {
       try {
@@ -508,6 +514,9 @@ After installing these packages, open vite.config.js file in the root directory 
         
         // Change the is whitlisted ref variable to true for this address
         isWhitelisted.value = true;
+        
+        // Change the accessLoading ref variable to false to stop the loaing animation
+        accessLoading.value = false;
       } catch(error) {
         alert(error);
       }
@@ -529,14 +538,17 @@ The final code for the App.vue file should look like this with the final changes
   import { contractAbi, contractAddress } from './contract';
 
   // DATA/VARIABLES
-  const isConnected = ref(false);
-  const ERC20_DECIMALS = 18;
+  const isConnected = ref(false); // variable for holding the state of a wallet, if its connected or not
+  const walletLoading = ref(false); // variable to show or hide spinner animation for connwct wallet button
+  const accessLoading = ref(false); // variable to show or hide spinner animation for get access button
+  const isWhitelisted = ref(false); // checks if an address has already been whitelisted or not
+  
+  const ERC20_DECIMALS = 18;  // for balance conversion to a readable amount
   let kit = reactive(null);
-  let cUSDBalance = ref(null);
-  const loading = ref(false);
-  const numberOfWhitelistedAddresses = ref(0);
-  const isWhitelisted = ref(false);
-  let contract = reactive(null);
+  let cUSDBalance = ref(null);  // for holding the user's cUSD balance
+  const numberOfWhitelistedAddresses = ref(0);  //  For storing the number of whitelisted addresses
+  let contract = reactive(null);  //  to store a contract instance
+
 
   // METHODS/FUNCTIONS
 
@@ -555,7 +567,7 @@ The final code for the App.vue file should look like this with the final changes
     // Check if celo extension is installed else, user is prompted to install the extension
     if(window.celo) {
       try {
-        loading.value = true;
+        walletLoading.value = true;
 
         // Enable the celo extension to connect to an account created
         await window.celo.enable()
@@ -577,7 +589,7 @@ The final code for the App.vue file should look like this with the final changes
 
         // Set isConnected to true and loading to false
         isConnected.value = true;
-        loading.value = false;
+        walletLoading.value = false;
 
         // Create a new contract instance using the contract info saved in contract.js file(contractAbi and contractAddress) and assing it to the reactive contract variable created earlier
         contract = new kit.web3.eth.Contract(contractAbi, contractAddress)
@@ -597,17 +609,23 @@ The final code for the App.vue file should look like this with the final changes
   
   // Add an account to the whitelist
   const joinWhitelist = async() => {
+    // Change the accessLoading ref variable to false to stop the loaing animation
+    accessLoading.value = true;    
+        
     // Checks if a wallet is connected, if not, alerts users to connect their wallet (the celo extension wallet)
     if(isConnected.value) {
       try {
         // Create a new contract instance with the HelloWorld contract info
         await contract.methods.addAddressToWhitelist().send({ from: kit.defaultAccount })
-        
+    
         // Get the number of whitelisted addresses and assign it to the numberOfWhitelistedAddresses ref variable
         numberOfWhitelistedAddresses.value =  await contract.methods.numAddressesWhitelisted().call();
         
         // Change the is whitlisted ref variable to true for this address
         isWhitelisted.value = true;
+        
+        // Change the accessLoading ref variable to false to stop the loaing animation
+        accessLoading.value = false;
       } catch(error) {
         alert(error);
       }
@@ -623,7 +641,7 @@ The final code for the App.vue file should look like this with the final changes
     <nav>
       <button v-if="isConnected" disabled>Wallet Connected</button>
       <button v-else @click="connectWallet">
-        <span v-if="loading" class="loader"></span>
+        <span v-if="walletLoading" class="loader"></span>
         <span v-else>Connect Wallet</span>
       </button>
       <p v-if="isConnected">{{ cUSDBalance }} <span>cUSD</span></p>
@@ -640,7 +658,10 @@ The final code for the App.vue file should look like this with the final changes
         <div>
           <p>{{ numberOfWhitelistedAddresses }} have already joined the Whitelist</p>
           <p v-if="isWhitelisted" class="whitelisted">Thanks for joining the WhiteListedChain's whitelist</p>
-          <button v-else @click="joinWhitelist">Get Early Access Pass</button>
+          <button v-else @click="joinWhitelist">
+            <span v-if="accessLoading" class="loader"></span>
+            <span v-else>Get Early Access Pass</span>
+          </button>
         </div>
       </div>
 
