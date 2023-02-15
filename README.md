@@ -1,6 +1,5 @@
 # BUILDING A CELO WHITELIST DAPP USING VUE.JS
-A whitelist dapp built on the celo blockchain using Vue.js for giving users early access to any services(could be early access to an NFT collection, a marketplace etc).
-
+#### Estimated Time: 20 minutes
 
 ## Table of Content
 - Introduction
@@ -14,17 +13,26 @@ A whitelist dapp built on the celo blockchain using Vue.js for giving users earl
 
 
 ## Introduction
-Celo was designed to enable a new universe of financial solutions accessible for mobile users, creating a global financial ecosystem where an end-user can onboard into the Celo ecosystem with just a mobile number. It offers the following key features
-- Layer-1 protocol
-- EVM compatible
-- Proof-of-stake
-- Carbon negative
-- Mobile-first identity
-- Ultra-light clients
-- Localized stablecoins (cUSD, cEUR, cREAL)
-- Gas payable in multiple currencies
-For more information, click [here](https://docs.celo.org/general) to learn more about celo
+Welcome to this tutorial on building a Celo whitelist dapp using Vue.js! In this tutorial, we will walk you through the steps of building a decentralized application (dapp) on the Celo blockchain platform that allows users to add addresses to a whitelist. We will be using Vue.js as our frontend framework to build the user interface, and the Celo blockchain platform to store the whitelist data on the blockchain.
 
+Before we dive into the technical details, let's briefly go over what a whitelist dapp is and why it might be useful. A whitelist dapp is a type of decentralized application that maintains a list of approved addresses that are allowed to perform certain actions on the blockchain, such as accessing a specific smart contract or executing a transaction. This can be useful for a variety of use cases, such as controlling access to a private smart contract, or ensuring that only authorized parties can participate in a specific token sale.
+
+Throughout this tutorial, we will guide you through the process of building a basic Vue.js frontend that interacts with a Celo smart contract on the blockchain. By the end of this tutorial, you will have a basic understanding of how to build a decentralized application using Vue.js and the Celo blockchain platform.
+
+To build this dapp, we will be using the following technologies:
+
+1.  Vue.js: A popular JavaScript frontend framework for building user interfaces.
+2.  Celo: A blockchain platform that allows for fast and secure transactions and smart contracts. Celo was designed to enable a new universe of financial solutions accessible for mobile users, creating a global financial ecosystem where an end-user can onboard into the Celo ecosystem with just a mobile number. It offers the following key features
+  - Layer-1 protocol
+  - EVM compatible
+  - Proof-of-stake
+  - Carbon negative
+  - Mobile-first identity
+  - Ultra-light clients
+  - Localized stablecoins (cUSD, cEUR, cREAL)
+  - Gas payable in multiple currencies
+  For more information, click [here](https://docs.celo.org/general) to learn more about celo
+3.  Solidity: A programming language used to write smart contracts on the Ethereum and Celo blockchain platforms.
 
 ## Requirements
 - Writing the smart contract and deploying it on the celo blockchain using RemixIDE. Access should be given to the first 15 users for free who want to get in.
@@ -44,12 +52,12 @@ Lets start building 🚀
 ## Build And Deploy The Smart Contract
 Now it's time to create a Solidity smart contract.
 You can use any editor you like to make the contract. However, for this part of the tutorial we recommend the online IDE [RemixIDE](https://remix.ethereum.org/)
-### 1.  Go to Remix
+#### 1.  Go to Remix
 ![Remix IDE](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/remixIDE.png)
 
-### 2.  Create a new solidity file in the contract folder of remixIDE, named Whitelist.sol
+#### 2.  Create a new solidity file in the contract folder of remixIDE and name it `Whitelist.sol`
 
-### 3.  Copy and paste the follwing code into the new solidity file created
+#### 3.  Copy and paste the follwing code into the new solidity file created
 
 #### 3.1 Specify the solidity version and add a license 
 ```solidity
@@ -133,7 +141,7 @@ contract Whitelist {
 }
 ```
 
-### 4.  Deploying the smart contract on the celo blockchain
+#### 4.  Deploying the smart contract on the celo blockchain
 Create a Celo wallet and deploy your contract to the Celo testnet alfajores.
 If you don't have celo extension wallet installed, follow the prompt below to install and set up your celo extension wallet
 
@@ -147,14 +155,14 @@ If you don't have celo extension wallet installed, follow the prompt below to in
 ![](https://raw.githubusercontent.com/dacadeorg/celo-development-101/main/content/gifs/celo_get_token_from_faucet.gif)
 
 #### 4.4. Install the Celo remix plugin and deploy your contract.
-In this tutorial, we will be deploy our smart contract, Whitelist.sol as opposed to Marketplace.sol shown in below
+In this tutorial, we will be deploy our smart contract, `Whitelist.sol` as opposed to `Marketplace.sol` shown in below
 
 
 ![](https://raw.githubusercontent.com/dacadeorg/celo-development-101/main/content/gifs/celo_install_remix_plugin_and_deploy_contract.gif)
   
 Great! You deployed your first contract on the Celo blockchain. Congratulations 🎉.
 
-### 5.  Saving the smart contract abi and address
+#### 5.  Saving the smart contract abi and address
 When you compile your contract in Remix, Remix also creates the ABI in the form of a JSON for your contract. Copy the JSON and save it.
 
 ![](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_assets/contract_abi.png)
@@ -206,9 +214,9 @@ The project directory should look something like this
 ![](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_assets/project_setup.png)
 
 
-#### 5.  In the src folder, delete the components folder(as the App.vue file will be sufficient for this tutorial) and the vue.svg file in the assets folder. Replace this file with this image [whitelist.png](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_images/whitelist.png).
+#### 5.  In the `src` folder, delete the `components` folder(as the App.vue file will be sufficient for this tutorial) and the `vue.svg` file in the `assets` folder. Replace this file with this image [whitelist.png](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_images/whitelist.png).
 
-#### 6.  Create a new file called contract.js in the src folder and paste in the following code
+#### 6.  Create a new file called `contract.js` in the src folder and paste in the following code
 
 ```js
 export const contractAbi = YOUR_CONTRACT_ABI;
@@ -217,7 +225,7 @@ export const contractAddress = "YOUR_CONTRACT_ADDRESS";
 
 Replace YOUR_CONTRACT_ABI with the ABI of your Whitelist Contract and YOUR_CONTRACT_ADDRESS with the address of the whitelist contract that you deployed. All this was saved earlier during the tutorial
 
-#### 6.  In the App.vue file, replace the code with the following code
+#### 6.  In the `App.vue` file, replace the code with the following code
 
 ```vue
 <script setup>
@@ -349,7 +357,7 @@ Replace YOUR_CONTRACT_ABI with the ABI of your Whitelist Contract and YOUR_CONTR
 
 ```
 
-#### 7.  Go to the styles.css file in the src folder and replace the code with the following
+#### 7.  Go to the `style.css` file in the `src` folder and replace the code with the following
 ```css
 body {
   margin: 0px;
@@ -373,7 +381,7 @@ npm install web3 @celo/contractkit
 npm install vite-plugin-node-polyfills
 ```
 
-After installing these packages, open vite.config.js file in the root directory and replace the code with the following code
+After installing these packages, open `vite.config.js` file in the root directory and replace the code with the following code
 
 ```js
   import { defineConfig } from 'vite';
@@ -392,7 +400,7 @@ After installing these packages, open vite.config.js file in the root directory 
   
 ```
 
-#### 9. In the App.vue file, import the packages installed and add the following variables as they will be need for this tutorial
+#### 9. In the `App.vue` file, import the packages installed and add the following variables as they will be need for this tutorial
 
 ```vue
 <script setup>
@@ -417,7 +425,7 @@ After installing these packages, open vite.config.js file in the root directory 
 
 #### 10. We will now write three functions, one to connect to the celo extension wallet, one to get the user's balance in cUSD and the last function to add a user to the whitelist.
 
-##### 10.1. To connect to the celo extension wallet, we will create the connectWallet() function
+##### 10.1. To connect to the celo extension wallet, we will create the `connectWallet()` function
 
 ```vue
 
@@ -472,7 +480,7 @@ After installing these packages, open vite.config.js file in the root directory 
 </script>
 ```
 
-#### 10.2.  To get user's balance in cUSD, we will create the getBalance() function
+#### 10.2.  To get user's balance in cUSD, we will create the `getBalance()` function
 
 ```vue
 <script setup>
@@ -491,7 +499,7 @@ After installing these packages, open vite.config.js file in the root directory 
 </script>
 ```
 
-#### 10.3.  To add a user's address to the whitelist, we will create the joinWhitelist() function
+#### 10.3.  To add a user's address to the whitelist, we will create the `joinWhitelist()` function
 
 ```vue
 <script setup>
@@ -528,7 +536,7 @@ After installing these packages, open vite.config.js file in the root directory 
 </script>
 ```
 
-The final code for the App.vue file should look like this with the final changes made by replacing hard coded values with their respective
+The final code for the `App.vue` file should look like this with the final changes made by replacing hard coded values with their respective
 
 ```vue
 <script setup>
