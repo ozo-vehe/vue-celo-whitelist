@@ -191,10 +191,16 @@ cd vue-celo-whitelist
 npm install
 ```
 
-#### 4.  Start up a local development server.
+#### 4.  Open the project in VS Code
+```
+code .
+```
+
+#### 5.  Start up a local development server. Using the command line or the terminal in VS Code.
 ```
 npm run dev
 ```
+
 The project directory should look something like this
 
 ![](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/remixIDE.png)
