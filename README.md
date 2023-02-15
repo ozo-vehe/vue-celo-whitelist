@@ -203,7 +203,7 @@ npm run dev
 
 The project directory should look something like this
 
-![](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/remixIDE.png)
+![](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_assets/project_setup.png)
 
 
 #### 5.  In the src folder, delete the components folder(as the App.vue file will be sufficient for this tutorial) and the vue.svg file in the assets folder. Replace this file with this image [whitelist.png](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_images/whitelist.png).
@@ -212,7 +212,7 @@ The project directory should look something like this
 
 ```js
 export const contractAbi = YOUR_CONTRACT_ABI;
-export const contractAddress = YOUR_CONTRACT_ADDRESS;
+export const contractAddress = "YOUR_CONTRACT_ADDRESS";
 ```
 
 Replace YOUR_CONTRACT_ABI with the ABI of your Whitelist Contract and YOUR_CONTRACT_ADDRESS with the address of the whitelist contract that you deployed. All this was saved earlier during the tutorial
