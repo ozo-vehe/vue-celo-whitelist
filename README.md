@@ -225,7 +225,7 @@ export const contractAddress = "YOUR_CONTRACT_ADDRESS";
 
 Replace YOUR_CONTRACT_ABI with the ABI of your Whitelist Contract and YOUR_CONTRACT_ADDRESS with the address of the whitelist contract that you deployed. All this was saved earlier during the tutorial
 
-#### 6.  In the `App.vue` file, replace the code with the following code
+#### 7.  In the `App.vue` file, replace the code with the following code
 
 ```vue
 <script setup>
@@ -357,7 +357,7 @@ Replace YOUR_CONTRACT_ABI with the ABI of your Whitelist Contract and YOUR_CONTR
 
 ```
 
-#### 7.  Go to the `style.css` file in the `src` folder and replace the code with the following
+#### 8.  Go to the `style.css` file in the `src` folder and replace the code with the following
 ```css
 body {
   margin: 0px;
@@ -372,7 +372,7 @@ Your project should look like this
 ![](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_assets/image1.png)
 
 
-#### 8.  We will now install a few packages needed to interact with our smart contract deployed on the celo blockchain. Run the following command on the terminal
+#### 9.  We will now install a few packages needed to interact with our smart contract deployed on the celo blockchain. Run the following command on the terminal
 
 ```
 npm install web3 @celo/contractkit
@@ -400,7 +400,7 @@ After installing these packages, open `vite.config.js` file in the root director
   
 ```
 
-#### 9. In the `App.vue` file, import the packages installed and add the following variables as they will be need for this tutorial
+#### 10. In the `App.vue` file, import the packages installed and add the following variables as they will be need for this tutorial
 
 ```vue
 <script setup>
@@ -423,9 +423,9 @@ After installing these packages, open `vite.config.js` file in the root director
 ```
 
 
-#### 10. We will now write three functions, one to connect to the celo extension wallet, one to get the user's balance in cUSD and the last function to add a user to the whitelist.
+#### 11. We will now write three functions, one to connect to the celo extension wallet, one to get the user's balance in cUSD and the last function to add a user to the whitelist.
 
-##### 10.1. To connect to the celo extension wallet, we will create the `connectWallet()` function
+##### 11.1. To connect to the celo extension wallet, we will create the `connectWallet()` function
 
 ```vue
 
@@ -480,7 +480,7 @@ After installing these packages, open `vite.config.js` file in the root director
 </script>
 ```
 
-#### 10.2.  To get user's balance in cUSD, we will create the `getBalance()` function
+#### 11.2.  To get user's balance in cUSD, we will create the `getBalance()` function
 
 ```vue
 <script setup>
@@ -499,7 +499,7 @@ After installing these packages, open `vite.config.js` file in the root director
 </script>
 ```
 
-#### 10.3.  To add a user's address to the whitelist, we will create the `joinWhitelist()` function
+#### 11.3.  To add a user's address to the whitelist, we will create the `joinWhitelist()` function
 
 ```vue
 <script setup>
