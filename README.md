@@ -766,7 +766,9 @@ The final code for the `App.vue` file should look like this with the final chang
 
 ## Pushing Code To Github
 We will show you how you can push your project on GitHub so other people can interact with it.
+
 After testing your DApp and checking that everything behaves correctly, upload your project to a new GitHub repository. For more information on how to push your code to Github, read this article [push to github](https://www.git-tower.com/learn/git/faq/push-to-github/).
+
 If needed, you can create a readme file for your project that explains your dapp and includes a link to your Dapp.
 
 
