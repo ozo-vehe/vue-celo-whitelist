@@ -1,29 +1,29 @@
-# BUILDING A WHITELIST DAPP ON THE CELO BLOCKCHAIN USING VUE.JS
+# Building a Whitelist Dapp On the Celo blockchain Using Vue.js
 #### Estimated Time: 20 minutes
 #### Demo Link: [Vue Celo Whiteliast DApp](https://vue-celo-whitelist.vercel.app/)
 
 ## Table of Content
-- Introduction
-- Requirement
-- Prerequisites
+- [Introduction](#introduction)
+- [Requirements](#requirements)
+- [Prerequisites](#prerequisites)
 - Tech stack
-- Build and deploy the smart contract
-- Building the frontend using Vue.js
-- Pushing to Github
-- Delpoying to vercel
+- [Build and deploy the smart contract](#build-and-deploy-the-smart-contract)
+- [Building the front end using Vue.js](#building-the-frontend-with-vue)
+- [Pushing to Github](#pushing-code-to-github)
+- [Deploying to Vercel](#deploying-to-vercel)
 
 
 ## Introduction
-Welcome to this tutorial on building a Celo whitelist dapp using Vue.js! In this tutorial, we will walk you through the steps of building a decentralized application (dapp) on the Celo blockchain platform that allows users to add addresses to a whitelist. We will be using Vue.js as our frontend framework to build the user interface, and the Celo blockchain platform to store the whitelist data on the blockchain.
+Welcome to this tutorial on building a Celo whitelist dapp using Vue.js! In this tutorial, we will walk you through the steps of building a decentralized application (dapp) on the Celo blockchain platform that allows users to add addresses to a whitelist. We will be using Vue.js as our front-end framework to build the user interface, and the Celo blockchain platform to store the whitelist data on the blockchain.
 
 Before we dive into the technical details, let's briefly go over what a whitelist dapp is and why it might be useful. A whitelist dapp is a type of decentralized application that maintains a list of approved addresses that are allowed to perform certain actions on the blockchain, such as accessing a specific smart contract or executing a transaction. This can be useful for a variety of use cases, such as controlling access to a private smart contract, or ensuring that only authorized parties can participate in a specific token sale.
 
-Throughout this tutorial, we will guide you through the process of building a basic Vue.js frontend that interacts with a Celo smart contract on the blockchain. By the end of this tutorial, you will have a basic understanding of how to build a decentralized application using Vue.js and the Celo blockchain platform.
+Throughout this tutorial, we will guide you through the process of building a basic Vue.js front end that interacts with a Celo smart contract on the blockchain. By the end of this tutorial, you will have a basic understanding of how to build a decentralized application using Vue.js and the Celo blockchain platform.
 
 To build this dapp, we will be using the following technologies:
 
-1.  Vue.js: A popular JavaScript frontend framework for building user interfaces.
-2.  Celo: A blockchain platform that allows for fast and secure transactions and smart contracts. Celo was designed to enable a new universe of financial solutions accessible for mobile users, creating a global financial ecosystem where an end-user can onboard into the Celo ecosystem with just a mobile number. It offers the following key features
+1.  [Vue.js](https://vuejs.org/): A popular JavaScript frontend framework for building user interfaces.
+2.  [Celo](https://celo.org/): A blockchain platform that allows for fast and secure transactions and smart contracts. Celo was designed to enable a new universe of financial solutions accessible to mobile users, creating a global financial ecosystem where an end-user can onboard into the Celo ecosystem with just a mobile number. It offers the following key features
   - Layer-1 protocol
   - EVM compatible
   - Proof-of-stake
@@ -32,33 +32,33 @@ To build this dapp, we will be using the following technologies:
   - Ultra-light clients
   - Localized stablecoins (cUSD, cEUR, cREAL)
   - Gas payable in multiple currencies
-  For more information, click [here](https://docs.celo.org/general) to learn more about celo
-3.  Solidity: A programming language used to write smart contracts on the Ethereum and Celo blockchain platforms.
+  For more information, click [here](https://docs.celo.org/general) to learn more about Celo
+3.  [Solidity](https://soliditylang.org/): A programming language used to write smart contracts on the Ethereum and Celo blockchain platforms.
 
 ## Requirements
-- Writing the smart contract and deploying it on the celo blockchain using RemixIDE. Access should be given to the first 15 users for free who want to get in.
+- Writing the smart contract and deploying it on the Celo blockchain using the Remix IDE. Access should be given to the first 15 users for free who want to get in.
 - There should be a website where people can go and enter into the whitelist. We will use Vue.js to build it and interact with our smart contract
 
 ## Prerequisites
 - You can write code in Vue.js
-- Have celo extension wallet installed and set up. If not, install [CeloExtensionWallet](https://chrome.google.com/webstore/detail/celoextensionwallet/kkilomkmpmkbdnfelcpgckmpcaemjcdh?hl=en) from Google Chrome store
-- Nodejs installed on your machine.
-- An IDE such as Vscode or Sublime text.
-- Remix IDE.
+- Have the Celo Extension Wallet installed and set up. If not, install [CeloExtensionWallet](https://chrome.google.com/webstore/detail/celoextensionwallet/kkilomkmpmkbdnfelcpgckmpcaemjcdh?hl=en) from the Google Chrome store
+- [Node.js](https://nodejs.org/en/) installed on your machine.
+- An IDE such as [VSCode](https://code.visualstudio.com/) or [Sublime Text](https://www.sublimetext.com/).
+- [Remix IDE](https://remix.ethereum.org/).
 - Command line or similar software installed.
 
-Lets start building 🚀
+Let's start building 🚀
 
 
 ## Build And Deploy The Smart Contract
 Now it's time to create a Solidity smart contract.
-You can use any editor you like to make the contract. However, for this part of the tutorial we recommend the online IDE [RemixIDE](https://remix.ethereum.org/)
+You can use any editor you like to make the contract. However, for this part of the tutorial we recommend using the [RemixIDE](https://remix.ethereum.org/)
 #### 1.  Go to Remix
 ![Remix IDE](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/remixIDE.png)
 
-#### 2.  Create a new solidity file in the contract folder of remixIDE and name it `Whitelist.sol`
+#### 2.  Create a new Solidity file in the contract folder of remixIDE and name it `Whitelist.sol`
 
-#### 3.  Copy and paste the follwing code into the new solidity file created
+#### 3.  Copy and paste the follwing code into the new Solidity file created
 
 #### 3.1 Specify the solidity version and add a license 
 ```solidity
@@ -142,9 +142,9 @@ contract Whitelist {
 }
 ```
 
-#### 4.  Deploying the smart contract on the celo blockchain
-Create a Celo wallet and deploy your contract to the Celo testnet alfajores.
-If you don't have celo extension wallet installed, follow the prompt below to install and set up your celo extension wallet
+#### 4.  Deploying the smart contract on the Celo blockchain
+Create a Celo wallet and deploy your contract to the Celo testnet Alfajores.
+If you don't have the Celo Extension Wallet installed, follow the prompt below to install and set up your celo extension wallet
 
 #### 4.1. Install the [CeloExtensionWallet](https://chrome.google.com/webstore/detail/celoextensionwallet/kkilomkmpmkbdnfelcpgckmpcaemjcdh?hl=en) from the Google Chrome Store.
 ![](https://raw.githubusercontent.com/dacadeorg/celo-development-101/main/content/gifs/celo_install_celo_extension_wallet.gif)
@@ -152,11 +152,11 @@ If you don't have celo extension wallet installed, follow the prompt below to in
 #### 4.2. Create a wallet.
 ![](https://raw.githubusercontent.com/dacadeorg/celo-development-101/main/content/gifs/celo_create_wallet.gif)
 
-#### 4.3. Get Celo token for the alfajores testnet from [https://celo.org/developers/faucet](https://celo.org/developers/faucet)
+#### 4.3. Get Celo token for the Alfajores testnet from [https://celo.org/developers/faucet](https://celo.org/developers/faucet)
 ![](https://raw.githubusercontent.com/dacadeorg/celo-development-101/main/content/gifs/celo_get_token_from_faucet.gif)
 
-#### 4.4. Install the Celo remix plugin and deploy your contract.
-In this tutorial, we will be deploy our smart contract, `Whitelist.sol` as opposed to `Marketplace.sol` shown in below
+#### 4.4. Install the Celo Remix plugin and deploy your contract.
+In this tutorial, we will be deploying our smart contract, `Whitelist.sol` as opposed to `Marketplace.sol` shown in below
 
 
 ![](https://raw.githubusercontent.com/dacadeorg/celo-development-101/main/content/gifs/celo_install_remix_plugin_and_deploy_contract.gif)
@@ -183,30 +183,30 @@ To develop the website we will be using Vue, a javascript framework used to buil
 - Performant: truly reactive, compiler-optimized rendering system that rarely requires manual optimization.
 - Versatile: a rich, incrementally adoptable ecosystem that scales between a library and a full-featured framework.
 
-#### 1.  To start with, we will use vite, the official Vue project scaffolding tool. 
+#### 1.  To start with, we will use Vite, the official Vue project scaffolding tool. 
 Make sure you have an up-to-date version of Node.js installed, then run the following command in your command line terminal
 
-```
+```sh
 npm create vite@latest vue-celo-whitelist -- --template vue
 ```
 #### 2.  Navigate to the the project.
 
-```
+```sh
 cd vue-celo-whitelist
 ```
 
 #### 3.  Install the required dependencies.
-```
+```sh
 npm install
 ```
 
 #### 4.  Open the project in VS Code
-```
+```sh
 code .
 ```
 
 #### 5.  Start up a local development server. Using the command line or the terminal in VS Code.
-```
+```sh
 npm run dev
 ```
 
@@ -373,12 +373,12 @@ Your project should look like this
 ![](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_assets/image1.png)
 
 
-#### 10.  We will now install a few packages needed to interact with our smart contract deployed on the celo blockchain. Run the following command on the terminal
+#### 10.  We will now install a few packages needed to interact with our smart contract deployed on the Celo blockchain. Run the following command on the terminal
 
-```
+```sh
 npm install web3 @celo/contractkit
 ```
-```
+```sh
 npm install vite-plugin-node-polyfills
 ```
 
@@ -424,9 +424,9 @@ After installing these packages, open `vite.config.js` file in the root director
 ```
 
 
-#### 12. We will now write three functions, one to connect to the celo extension wallet, one to get the user's balance in cUSD and the last function to add a user to the whitelist.
+#### 12. We will now write three functions, one to connect to the Celo Extension Wallet, one to get the user's balance in cUSD and the last function to add a user to the whitelist.
 
-##### 12.1. To connect to the celo extension wallet, we will create the `connectWallet()` function
+##### 12.1. To connect to the Celo Extension Wallet, we will create the `connectWallet()` function
 
 ```vue
 
@@ -481,7 +481,7 @@ After installing these packages, open `vite.config.js` file in the root director
 </script>
 ```
 
-#### 12.2.  To get user's balance in cUSD, we will create the `getBalance()` function
+#### 12.2.  To get a user's balance in cUSD, we will create the `getBalance()` function
 
 ```vue
 <script setup>
@@ -766,21 +766,21 @@ The final code for the `App.vue` file should look like this with the final chang
 
 
 ## Pushing Code To Github
-After testing your DApp and checking that everything behaves correctly, upload your project to a new GitHub repository. For more information on how to push your code to Github, read this article ["push to github"](https://www.git-tower.com/learn/git/faq/push-to-github/).
+After testing your dapp and checking that everything behaves correctly, upload your project to a new GitHub repository. For more information on how to push your code to Github, read this article ["push to GitHub"](https://www.git-tower.com/learn/git/faq/push-to-github/).
 
-If needed, you can create a readme file for your project that explains your dapp and includes a link to your Dapp.
+If needed, you can create a readme file for your project that explains your dapp and includes a link to your dapp.
 
 
 ## Deploying To Vercel
-We will now deploy your dApp, so that everyone can see your website and you can share it with everyone.
+We will now deploy your dapp so that everyone can see your website and you can share it with everyone.
 
-Follow these steps to deploy your DApp to vercel
+Follow these steps to deploy your dapp to [Vercel](https://vercel.com/)
 1.  Go to Vercel and sign in with your GitHub.
-2.  Then click on Add New button, select Project from the dropdown menu and then select your Whitelist DApp repo from the options giving.
-3.  When configuring your new project, Vercel will allow you to customize your Root Directory. However for this project we will leave it at the Root Directory
+2.  Then click on Add New button, select Project from the dropdown menu, and then select your Whitelist dapp repo from the options given.
+3.  When configuring your new project, Vercel will allow you to customize your Root Directory. However, for this project, we will leave it at the Root Directory
 4.  Select the Framework as Vite
 5.  Click Deploy
 
 Now you can see your deployed website by going to your dashboard, selecting your project, and copying the URL beneath domains!
 
-That’s it! Congratulations! You are done with the tutorial and have build a DApp using Vue and celo, pushed your code to Github and deployed it to vercel! 🎉
+That’s it! Congratulations! You are done with the tutorial and have built a dapp using Vue and Solidity, pushed your code to Github, and deployed it to Vercel! 🎉
