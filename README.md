@@ -1,5 +1,6 @@
-# BUILDING A CELO WHITELIST DAPP USING VUE.JS
+# BUILDING A WHITELIST DAPP ON THE CELO BLOCKCHAIN USING VUE.JS
 #### Estimated Time: 20 minutes
+#### Demo Link: [Vue Celo Whiteliast DApp](https://vue-celo-whitelist.vercel.app/)
 
 ## Table of Content
 - Introduction
