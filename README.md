@@ -53,7 +53,7 @@ Let's start building 🚀
 Now it's time to create a Solidity smart contract.
 You can use any editor you like to make the contract. However, for this part of the tutorial we recommend the online IDE [RemixIDE](https://remix.ethereum.org/)
 1. Go to Remix
-![Remix IDE](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/remixIDE.png)
+![Remix IDE](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_assets/remixIDE.png)
 
 2. Create a new solidity file in the contract folder of remixIDE and name it `Whitelist.sol`
 
