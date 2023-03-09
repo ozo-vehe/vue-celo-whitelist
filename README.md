@@ -1,11 +1,11 @@
 # BUILDING A WHITELIST DAPP ON THE CELO BLOCKCHAIN USING VUE.JS
-- Estimated Time: 20 minutes
+- Estimated Time: 37 minutes
 - Demo Link: [Vue Celo Whitelist DApp](https://vue-celo-whitelist.vercel.app/)
 
 ## Table of Content
-- [Introduction](#Introduction)
+- [Introduction](#introduction)
 - [Requirement](#requirements)
-- [Prerequisites](#Prerequisites)
+- [Prerequisites](#prerequisites)
 - [Build and deploy the smart contract](#build-and-deploy-the-smart-contract)
 - [Building the frontend using Vue.js](#building-the-frontend-with-vue)
 - [Pushing to Github](#pushing-code-to-github)
@@ -1006,30 +1006,61 @@ This is the function we’ll be creating to allow the user to join a quest. Noti
 6. `withdrawFunds()` function
 ```vue
 <script setup>
+  // Wothdraw funds
+  const withdrawFunds = async() => {
+    withdrawLoading.value = true;
+    try {
+      if(questId.value) {
+        const contractQuest = await contract.methods.quests(questId.value).call();
+        const {owner, funds} = contractQuest;
 
+        if(owner !== contractOwner.value) {
+          alert("Sorry, you are not the quest owner")
+        } else {
+          if(funds >= 1) {
+            await contract.methods.withdraw(questId.value).send({ from: kit.defaultAccount });
+          } else {
+            alert("No funds to withdraw")
+          }
+        }
+      } else {
+        alert("Input quest ID before proceeding")
+      }
+      await getBalance();
+    } catch (err) {
+
+    }
+    withdrawLoading.value = false;
+  }
 </script>
 ```
+Lastly, we have the `withdrawFunds()` function. The function can only be triggered by the owner of the quest. This is made sure by using the `if-statement` which checks if the function is called by the owner of the quest. We call the `withdraw` function from the smart contract passing in the `questId` as a parameter. 
 
 
-### Final code for `App.vue`
+Final code for `App.vue`
 ```vue
 <script setup>
   import { ref, reactive } from "vue";
   import Web3 from "web3";
-  import { newKitFromWeb3 } from "@celo/contractkit";
+  import { newKitFromWeb3, CeloContract } from "@celo/contractkit";
   import { contractAbi, contractAddress } from './contract';
 
   // DATA/VARIABLES
   const isConnected = ref(false); // variable for holding the state of a wallet, if it's connected or not
   const walletLoading = ref(false); // variable to show or hide spinner animation for connect wallet button
   const accessLoading = ref(false); // variable to show or hide spinner animation for get access button
+  const joinLoading = ref(false); // variable to show or hide spinner animation for join quest button
+  const withdrawLoading = ref(false); // variable to show or hide spinner animation for withdraw button
   const isWhitelisted = ref(false); // checks if an address has already been whitelisted or not
+  const contractOwner = ref(null); // variable for the contractOwner of the smart contract
   
   const ERC20_DECIMALS = 18;  // for balance conversion to a readable amount
   let kit = reactive(null);
-  let cUSDBalance = ref(null);  // for holding the user's cUSD balance
+  let CELOBalance = ref(null);  // for holding the user's cUSD balance
   const numberOfWhitelistedAddresses = ref(0);  //  For storing the number of whitelisted addresses
   let contract = reactive(null);  //  to store a contract instance
+  let questsData = ref(null); // holds all the data for every quest
+  let questId = ref(null); // quest id
 
 
   // METHODS/FUNCTIONS
@@ -1037,11 +1068,11 @@ This is the function we’ll be creating to allow the user to join a quest. Noti
   // Get user balance in cUSD
   const getBalance = async() => {
     // Using the getTotalBalance function from kit, get the total balance and assign it to a totalBalance variable
-    const totalBalance = await kit.getTotalBalance(kit.defaultAccount)
+    const totalBalance = await kit.getTotalBalance(kit.defaultAccount);
     
     // Using the ERC20_DECIMAL constant, convert the total balance to a readable amount set to 2 decimal places
-    // assign the value to the cUSDBalance ref created earlier 
-    cUSDBalance.value = totalBalance.cUSD.shiftedBy(-ERC20_DECIMALS).toFixed(2)
+    // assign the value to the CELOBalance ref created earlier 
+    CELOBalance.value = totalBalance.CELO.shiftedBy(-ERC20_DECIMALS).toFixed(2);
   }
 
   // Connect to the celo extension wallet
@@ -1069,18 +1100,26 @@ This is the function we’ll be creating to allow the user to join a quest. Noti
         // Call the getBalance function to get the users cUSD balance
         await getBalance();
 
-        // Set isConnected to true and loading to false
+        // Set isConnected to true and walletLoading to false
         isConnected.value = true;
         walletLoading.value = false;
 
         // Create a new contract instance using the contract info saved in contract.js file(contractAbi and contractAddress) and assign it to the reactive contract variable created earlier
         contract = new kit.web3.eth.Contract(contractAbi, contractAddress)
 
+        // set the owner of the smart contract to the contractOwner variable
+        contractOwner.value = await contract.methods.owner().call();
+
+        console.log(contractOwner.value);
+
         // Get the number of whitelisted addresses and assign it to the numberOfWhiteListedAddresses ref variable
         numberOfWhitelistedAddresses.value =  await contract.methods.numAddressesWhitelisted().call();
         
         // Check if the connect account address has been whitelisted or not and assign it to the isWhitelisted ref variable
         isWhitelisted.value = await contract.methods.whitelistedAddresses(kit.defaultAccount).call();
+
+        // call the getQuestsInfo function
+        await getQuestsInfo();
       } catch (error) {
         console.log(error)
       }
@@ -1091,7 +1130,7 @@ This is the function we’ll be creating to allow the user to join a quest. Noti
   
   // Add an account to the whitelist
   const joinWhitelist = async() => {
-    // Change the accessLoading ref variable to false to stop the loading animation
+    // Change the accessLoading ref variable to false to stop the walletLoading animation
     accessLoading.value = true;    
         
     // Checks if a wallet is connected, if not, alerts users to connect their wallet (the celo extension wallet)
@@ -1106,8 +1145,6 @@ This is the function we’ll be creating to allow the user to join a quest. Noti
         // Change the is whitlisted ref variable to true for this address
         isWhitelisted.value = true;
         
-        // Change the accessLoading ref variable to false to stop the loading animation
-        accessLoading.value = false;
       } catch(error) {
         alert(error);
       }
@@ -1115,7 +1152,81 @@ This is the function we’ll be creating to allow the user to join a quest. Noti
     else {
       alert("Connect Wallet (A Celo Extension Wallet)");
     }
+    
+    // Change the accessLoading ref variable to false to stop the walletLoading animation
+    accessLoading.value = false;
   }
+
+  // Get quests info from the smart contract
+  const getQuestsInfo = async() => {
+    try {
+      const questId = await contract.methods.questId().call();
+      console.log(questId);
+      let allQuestsInfo = [];
+      let thisQuest;
+      for (let i = 0; i < questId; i++) {
+        thisQuest = await contract.methods.quests(i).call();
+        allQuestsInfo.push(thisQuest);
+      }
+
+      questsData.value = allQuestsInfo;
+    } catch (err) {
+      console.log("getQuestsInfo error...");
+      console.log(err);
+    }
+  };
+
+  // Join a quest
+  const joinQuest = async () => {
+    joinLoading.value = true;
+    try {
+      if (!questId.value) {
+        alert("Input quest ID before proceeding");
+      } else {
+        if(isWhitelisted.value) {
+          await contract.methods.whitelistJoinQuest(questId.value).send({ from: kit.defaultAccount });
+        } else {
+          const questPrice = await contract.methods.DEFAULT_QUEST_PRICE().call();
+          await contract.methods.publicJoinQuest(questId.value).send({ from: kit.defaultAccount, value: questPrice });
+        }
+        await getQuestsInfo();
+        await getBalance();
+        alert("Successfully joined the quest");
+      }
+    } catch (err) {
+      console.log(err);
+      alert("Error encountered! refer to console log to debug");
+    }
+    joinLoading.value = false;
+  };
+
+  // Wothdraw funds
+  const withdrawFunds = async() => {
+    withdrawLoading.value = true;
+    try {
+      if(questId.value) {
+        const contractQuest = await contract.methods.quests(questId.value).call();
+        const {owner, funds} = contractQuest;
+
+        if(owner !== contractOwner.value) {
+          alert("Sorry, you are not the quest owner")
+        } else {
+          if(funds >= 1) {
+            await contract.methods.withdraw(questId.value).send({ from: kit.defaultAccount });
+          } else {
+            alert("No funds to withdraw")
+          }
+        }
+      } else {
+        alert("Input quest ID before proceeding")
+      }
+      await getBalance();
+    } catch (err) {
+
+    }
+    withdrawLoading.value = false;
+  }
+
 </script>
 
 <template>
@@ -1126,38 +1237,77 @@ This is the function we’ll be creating to allow the user to join a quest. Noti
         <span v-if="walletLoading" class="loader"></span>
         <span v-else>Connect Wallet</span>
       </button>
-      <p v-if="isConnected">{{ cUSDBalance }} <span>cUSD</span></p>
-      <p v-else>0.00 <span>cUSD</span></p>
+      <p v-if="isConnected">{{ CELOBalance }} <span>CELO</span></p>
+      <p v-else>0.00 <span>CELO</span></p>
     </nav>
 
-    <div class="whitelist">
+    <div class="whitelist" v-if="!numberOfWhitelistedAddresses">
       <div class="whitelistHeader">
         <h1>Welcome to <span>WhiteListedChain</span></h1>
         <p>
           Secure, transparent access to decentralized networks. 
-          Click the button below to get early access.
+          Click the button below to get early access to our hosted quests.
         </p>
-        <div>
-          <p>{{ numberOfWhitelistedAddresses }} have already joined the Whitelist</p>
-          <p v-if="isWhitelisted" class="whitelisted">Thanks for joining the WhiteListedChain's whitelist</p>
-          <button v-else @click="joinWhitelist">
-            <span v-if="accessLoading" class="loader"></span>
-            <span v-else>Get Early Access Pass</span>
-          </button>
-        </div>
       </div>
 
       <div class="whitelistImage">
         <img src="./assets/whitelist.png" />
       </div>
     </div>
+
+
+    <div class="quests" v-else>
+      <div class="earlyAccess">
+        <p>{{ numberOfWhitelistedAddresses }} have already joined the Whitelist</p>
+        <p v-if="isWhitelisted" class="whitelisted">Thanks for joining the WhiteListedChain's whitelist</p>
+        <button v-else @click="joinWhitelist">
+          <span v-if="accessLoading" class="loader"></span>
+          <span v-else>Get Early Access Pass</span>
+        </button>
+      </div>
+
+      <div v-if="questsData">
+        <h2>
+          <u>All Quests:</u>
+        </h2>
+
+        <div>
+          <div class="quest" v-for="(quest, index) in questsData" :key="index">
+            <h3>{{ quest.title }}</h3>
+            <ul>
+              <li>questId: {{ quest.questId }}</li>
+              <li>number of players: {{ quest.numberOfPlayers }}</li>
+              <li>reward: {{ quest.reward }}</li>
+              <li>number of rewards available: {{ quest.numberOfRewards }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+        
+      <div class="questActions">
+        <h2>
+          <u>Actions:</u>
+        </h2>
+        
+        <div>
+          <input type="text" placeholder="Quest Id" v-model="questId" /> <br>
+          <button @click="joinQuest">        
+            <span v-if="joinLoading" class="loader"></span>
+            <span v-else>Join Quest</span>
+          </button>
+          <button v-if="contractOwner === kit.defaultAccount" @click="withdrawFunds">
+            <span v-if="withdrawLoading" class="loader"></span>
+            <span v-else>Withdraw</span>
+          </button>
+        </div>
+      </div>
+    </div>
   </main>
 </template>
 
 <style scoped>
-  @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
   main {
-    font-family: 'Montserrat';
+    font-family: 'JetBrains Mono', monospace;
     font-size: 16px;
     background-color: #fff;
   }
@@ -1172,14 +1322,13 @@ This is the function we’ll be creating to allow the user to join a quest. Noti
     align-items: center;
     justify-content: center;
     border: none;
-    min-width: 150px;
-    height: 45px;
+    min-width: 100px;
     overflow: hidden;
     background-color: #e096e0;
     color: #fff;
-    padding: 13px 30px;
-    border-radius: 8px;
-    font-size: 1rem;
+    padding: 10px 10px;
+    font-size: 0.8rem;
+    font-family: inherit;
     cursor: pointer;
   }
   button:disabled {
@@ -1189,8 +1338,9 @@ This is the function we’ll be creating to allow the user to join a quest. Noti
   button .loader {
     display: inline-block;
     border: thin solid #e096e0;
-    width: 15px;
-    height: 15px;
+    width: 10px;
+    height: 10px;
+    margin: 0px;
     border-radius: 50%;
     border-left: 2px solid #fff;
     animation: spinner 0.3s linear infinite;
@@ -1200,7 +1350,7 @@ This is the function we’ll be creating to allow the user to join a quest. Noti
     to { transform: rotate(360deg);}
   }
 
-  .whitelist {
+  .whitelist, .quests {
     display: flex;
     min-height: calc(100vh - 130px);
     justify-content: center;
@@ -1209,7 +1359,7 @@ This is the function we’ll be creating to allow the user to join a quest. Noti
     padding: 10px 5%;
   }
   .whitelist h1 {
-    font-size: 4rem;
+    font-size: 2rem;
   }
   .whitelist h1 span {
     color: #e096e0;
@@ -1232,8 +1382,51 @@ This is the function we’ll be creating to allow the user to join a quest. Noti
     height: 100%;
     object-fit: contain;
   }
-</style>
 
+
+  .quests {
+    display: flex;
+    min-height: calc(100vh - 130px);
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px 30px;
+    align-items: center;
+    padding: 10px 5%;
+  }
+  .quests > div {
+    text-align: center;
+  }
+  .quests h2 {
+    text-align: center;
+  }
+
+  .earlyAccess p {
+    margin: 5px 0px;
+  }
+  .earlyAccess button {
+    margin: 0px auto;
+  }
+  .questActions input {
+    margin: 10px;
+    height: 20px;
+    width: 100px;
+    font-family: inherit;
+  }
+  .questActions button {
+    display: inline;
+    margin: 0px 5px;
+  }
+  
+  .quest {
+    padding: 10px;
+    border: thin solid #f8f7f7;
+    text-align: left;
+    margin: 10px 0px;
+  }
+  .quest * {
+    text-transform: capitalize;
+  }
+</style>
 ```
 
 
@@ -1242,8 +1435,6 @@ This is the function we’ll be creating to allow the user to join a quest. Noti
 After testing your DApp and checking that everything behaves correctly, upload your project to a new GitHub repository. For more information on how to push your code to Github, read this article ["push to github"](https://www.git-tower.com/learn/git/faq/push-to-github/).
 
 If needed, you can create a readme file for your project that explains your dapp and includes a link to your Dapp.
-
-
 ## Deploying To Vercel
 We will now deploy your dApp so that everyone can see your website and you can share it with everyone.
 
