@@ -205,7 +205,7 @@
         <h1>Welcome to <span>WhiteListedChain</span></h1>
         <p>
           Secure, transparent access to decentralized networks. 
-          Click the button below to get early access to our hosted quests.
+          Connect your wallet to get early access to our hosted quests.
         </p>
       </div>
 
