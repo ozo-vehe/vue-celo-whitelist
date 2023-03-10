@@ -394,7 +394,7 @@ contract Whitelist is Ownable {
     /*
     * @dev withdraw allows the quest owner (deployer) to withdraw the celo from the contract
     */
-    function withdraw(uint256 id) payable external onlyOwner {
+    function withdraw(uint256 id) payable external questExists(id) onlyOwner {
         require(msg.sender == quests[id].owner, "Only owner of this quest can withraw the funds");
 
         uint256 amount = quests[id].funds;
