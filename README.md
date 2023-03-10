@@ -239,7 +239,7 @@ In the body of the function, we check if the amount sent by the user is equal to
     /*
     * @dev withdraw allows the quest owner (deployer) to withdraw the celo from the contract
     */
-    function withdraw(uint256 id) payable external onlyOwner {
+    function withdraw(uint256 id) payable external questExists(id) onlyOwner {
         uint256 amount = quests[id].funds;
 
         (bool sent, ) = msg.sender.call{value: amount}("");
@@ -250,10 +250,10 @@ In the body of the function, we check if the amount sent by the user is equal to
 ```
 This function allows the owner of a quest to withdraw funds saved in the quest. It takes in only 1 parameter - the questId of the quest that the owner wishes to withdraw funds from. The first thing we need to do is to ensure that the questId submitted as part of the function call is valid using the `questExists()` modifier we created. We also used the `onlyOwner` modifier imported from the `Ownable.sol` smart contract.
 
-In the body of the function, we assing the funds stored in the particular quest to the variable `amount`, then using [`call()`](https://solidity-by-example.org/sending-ether/) we send the amount to the owner of the smart contract. Lastly, we decrement the funds value for that quest by the amount withdrawn.
+In the body of the function, we assign the funds stored in that particular quest to the variable `amount`, then using [`call()`](https://solidity-by-example.org/sending-ether/) we send the amount to the owner of the smart contract. Lastly, we decrement the funds value for that quest by the amount withdrawn.
 
 
-6. Lastly we create our `questExists` modifier our two additional functions to enable our contract receive payment that is `receive()` and `fallback()`
+6. Lastly we create our `questExists` modifier and two additional functions to enable our contract receive payment. They are the `receive()` and `fallback()` functions
 ```solidity
     modifier questExists(uint256 id) {
         require(quests[id].reward != 0, "Quest does not exist");
@@ -265,7 +265,7 @@ In the body of the function, we assing the funds stored in the particular quest 
     // Fallback function is called when msg.data is not empty
     fallback() external payable {}
 ```
-`receive()` is called if msg.data is empty, otherwise `fallback()` is called.
+`receive()` function is called if msg.data is empty, otherwise `fallback()` function is called.
 
 
 
