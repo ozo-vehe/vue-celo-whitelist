@@ -441,7 +441,7 @@ Great! You deployed your first contract on the Celo blockchain. Congratulations 
 
 5. Now we will create two new quests with the following data.
 
-On the deployed contract, click on `createQuest` and inser the following details.
+On the deployed contract, click on `createQuest` and fill in the following details.
 ![](https://github.com/ozo-vehe/vue-celo-whitelist/blob/master/tutorial_assets/createQuest.png)
 
 Create a new quest with the following information:
