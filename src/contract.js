@@ -273,4 +273,4 @@ export const contractAbi = [
 		"type": "receive"
 	}
 ];
-export const contractAddress = "0xAFF540Ee07DdE292D28e7139f6408e9fEA167C72";
+export const contractAddress = "0xF2bc6E433620Dd3DFF0B95703D280810a9d16c69";
